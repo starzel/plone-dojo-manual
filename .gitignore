@@ -1,0 +1,11 @@
+*~
+*.mo
+_build/
+bin/
+include/
+lib/
+local/
+.vagrant
+build/
+plone_training_config/training/
+.doctrees
