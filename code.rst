@@ -1,62 +1,30 @@
-Exercises and examples
-======================
+Coding
+======
 
-Addons
-------
+Edit ``browser/dojo.py``.
 
-The addon ``plone.dojo`` is preinstalled by your buildout. You can find it in the ``src``-directory of the buildout.
-
-We have to install it. Go to http://localhost:8080/Plone/prefs_install_products_form, select ``plone.dojo 0.1 `` and install it.
-
-The code is in ``<buidout-directory>/src/plone.dojo/src/plone/dojo/``. All paths from now on are relative to this. The directory-structure is needed to make a package testable by itself.
-
-
-Browser Views
--------------
-
-The browser view ``http://localhost:8080/Plone/dojo`` is already there.
-
-It is registered in ``browser/configure.zcml``
-
-.. code-block:: xml
-
-    <browser:page
-        name="dojo"
-        for="*"
-        class=".dojo.DojoView"
-        template="dojo.pt"
-        permission="zope2.View"
-        />
-
-This refers to a python-class ``DojoView`` that is found in ``browser/dojo.py``
+Use the method ``dojo`` to return something else.
 
 .. code-block:: python
 
-    # -*- coding: UTF-8 -*-
-    from Products.Five.browser import BrowserView
-    from plone import api
-
-    import logging
-    logger = logging.getLogger(__name__)
-
-
-    class DojoView(BrowserView):
-        """A browser view.
+    def dojo(self):
+        """Add code here.
         """
+        context = self.context
+        title = context.title
+        portal_type = context.portal_type
+        url = context.absolute_url()
+        return "This is the {0} {1} at {2}".format(portal_type, title, url)
 
-        def dojo(self):
-            """Add code here.
-            """
+The template ``dojo.pt`` still needs the initial tal-statement:
 
-            return "Hello Plone!"
-
-And to a template ``dojo.pt`` that is ``browser/dojo.pt``.
-
-.. code-block:: html
+.. code-block:: xml
 
     <h1 tal:content="python: view.dojo()">
         Hello World!
     </h1>
+
+Changed python-files are used by restarting Plone or http://localhost:8080/@@reload
 
 
 plone.api
@@ -73,6 +41,86 @@ The api is divided in five sections:
 * `Groups`: `Grant roles to group <http://docs.plone.org/external/plone.api/docs/group.html#grant-roles-to-group>`_
 * `Users`: `Get user roles <http://docs.plone.org/external/plone.api/docs/user.html#get-user-roles>`_
 * `Environment`: `Switch roles inside a block <http://docs.plone.org/external/plone.api/docs/env.html#switch-roles-inside-a-block>`_
+
+
+Exercise 1
+++++++++++
+
+Create 5 talks each time the new method ``create_talks`` is called.
+
+* Use the docs at http://docs.plone.org/external/plone.api/docs/content.html#create-content to find out how to do that.
+* Use ``logger.info("something")`` to print log-messages to the console.
+
+..  admonition:: Solution
+    :class: toggle
+
+    .. code-block:: python
+
+        # -*- coding: UTF-8 -*-
+        from Products.Five.browser import BrowserView
+        from plone import api
+
+        import logging
+        logger = logging.getLogger(__name__)
+
+
+        class DojoView(BrowserView):
+            """A browser view.
+            """
+
+            def create_talks(self, amount=5):
+                """Create talks
+                """
+                portal = api.portal.get()
+
+                for i in range(amount):
+                    obj = api.content.create(
+                        type='talk',
+                        title='A talk',
+                        container=portal)
+                    logger.info("Created talk {0}".format(obj.absolute_url()))
+
+
+For many **bonus-points**: Allow the user to pass the number of talks to be created as a query-string.
+
+* Query-strings are automatically passed as parameters to the ``__call__`` method.
+* That method again is responsible for rendering the template. Now you have to do this now by hand.
+* Register the template as a instance of ``Products.Five.browser.pagetemplatefile.ViewPageTemplateFile`` (it takes repative paths) and call it as ``return self.template()``.
+
+..  admonition:: Solution
+    :class: toggle
+
+    .. code-block:: python
+
+        # -*- coding: UTF-8 -*-
+        from Products.Five.browser import BrowserView
+        from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+        from plone import api
+
+        import logging
+        logger = logging.getLogger(__name__)
+
+
+        class DojoView(BrowserView):
+            """A browser view.
+            """
+
+            template = ViewPageTemplateFile("dojo.pt")
+
+            def __call__(self, amount=5):
+                self.amount = int(amount)
+                return self.template()
+
+            def create_talks(self):
+                """Create talks
+                """
+                portal = api.portal.get()
+                for i in range(self.amount):
+                    obj = api.content.create(
+                        type='talk',
+                        title='A talk',
+                        container=portal)
+                    logger.info("Created talk {0}".format(obj.absolute_url()))
 
 
 portal-tools
@@ -94,6 +142,63 @@ portal_quickinstaller
     ``isProductInstalled()`` checks wether a product is installed.
 
 Look in the ``interfaces.py`` in the respective package and read the docstrings.
+
+
+
+Exercise 2
+++++++++++
+
+Find all private talks in the page and publish them. Display a html-list of the published items.
+
+* Use the tool ``portal_catalog`` to query for types.
+* Use ``plone.api.content.transition`` to publish.
+* There are some pittfalls ;-)
+
+..  admonition:: Solution
+    :class: toggle
+
+    .. code-block:: python
+
+        # ...
+
+        class DojoView(BrowserView):
+
+            # ...
+
+            def publish_all_talks(self):
+                """Publish all private talks
+                """
+                results = []
+                portal_catalog = api.portal.get_tool('portal_catalog')
+                brains = portal_catalog(
+                    portal_type="talk",
+                    review_state="private",
+                )
+                for brain in brains:
+                    obj = brain.getObject()
+                    api.content.transition(obj, to_state='published')
+                    results.append(obj.absolute_url())
+                    logger.info("Published talk {0}".format(obj.absolute_url()))
+
+                return results
+
+    Add this to the template ``dojo.pt``:
+
+    .. code-block:: html
+
+        <h2>Published talks:</h2>
+        <ul tal:define="talks python:view.publish_all_talks()">
+            <li tal:repeat="talk talks"
+                tal:content="talk">
+            </li>
+            <li tal:condition="not: talks">
+                No talks published
+            </li>
+        </ul>
+
+
+Look at ``views.py`` to see a more advanced example.
+
 
 
 Debugging

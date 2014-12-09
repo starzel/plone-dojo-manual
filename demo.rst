@@ -1,5 +1,5 @@
-Demo
-====
+Features
+========
 
 Some of the many features of Plone
 -----------------------------------
@@ -8,7 +8,6 @@ Some of the many features of Plone
 - Managing Content
 - Workflow
 - Portlets
-- Custom Types with Dexterity
 
 
 Addons
@@ -20,5 +19,19 @@ Addons
     - Ask in the User-group
     - The top 100 are soon on the new plone.com and plone.org
 
-Read more: http://plone-training.readthedocs.org/en/latest/addons.html
 
+plone.dojo
+----------
+
+The addon ``plone.dojo`` is preinstalled by your buildout. You can find it in the ``src``-directory of the buildout.
+
+We have to install it to enable its features.
+
+* Go to http://localhost:8080/Plone/prefs_install_products_form
+* Install ``plone.dojo 0.1``
+
+The code is in ``<buidout-directory>/src/plone.dojo/src/plone/dojo/``. All paths from now on are relative to this. The weird directory-structure is needed to make a package testable by itself.
+
+.. note::
+
+    Read more about add-ons: http://plone-training.readthedocs.org/en/latest/addons.html

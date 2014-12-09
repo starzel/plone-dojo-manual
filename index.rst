@@ -14,4 +14,6 @@ Contents:
     installation
     starting
     demo
+    content
+    views
     code
