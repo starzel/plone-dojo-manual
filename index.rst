@@ -1,7 +1,9 @@
 Plone Coding Dojo
-================
+=================
 
-Munich, 9.12.2015
+*by Philip Bauer*
+
+Python Usergroup Munich, 9.12.2015
 
 
 Contents:
