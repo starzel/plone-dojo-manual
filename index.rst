@@ -9,8 +9,8 @@ Held at the Python Usergroup Munich, 9.12.2015
 Contents:
 
 ..  toctree::
-    :maxdepth: 2
-    :numbered: 1
+    :maxdepth: 0
+    :numbered: 0
 
     about
     installation

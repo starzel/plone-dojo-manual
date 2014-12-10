@@ -51,7 +51,7 @@ The api is divided in five sections. Here are examples for each:
 
 
 Exercise 1
-++++++++++
+----------
 
 Create 5 talks each time the new method ``create_talks`` is called.
 
@@ -125,7 +125,7 @@ In this case the method ``__call__`` is used to execute some logic. You do not n
 
 
 Exercise 2
-++++++++++
+----------
 
 Modify the method ``create_talks`` to allow the user to pass the number of talks to be created as a query-string.
 
@@ -222,7 +222,7 @@ Look in the ``interfaces.py`` in the respective package and read the docstrings.
 
 
 Exercise 3
-++++++++++
+----------
 
 Find all private talks in the page and publish them. Display a html-list of the published items.
 

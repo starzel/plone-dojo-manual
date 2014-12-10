@@ -1,6 +1,8 @@
 Templates
 =========
 
+A simple view with a template
+-----------------------------
 
 Browser views are the swiss army knife of Plone Programmer.
 
@@ -50,9 +52,17 @@ And to a template ``dojo.pt`` that is ``browser/dojo.pt``.
         Hello World!
     </h1>
 
+This template uses tal to modify the rendered html.
+
+.. note::
+
+    Learn all about tal and page templates at http://plone-training.readthedocs.org/en/latest/zpt.html
+
+You should prefer python-statements in templates over path-statements because python makes it clear that ``dojo`` is a method of ``view`` instead of a subobject or a attribute. In a path-statement the obeove would look like this: ``tal:content="python: view/dojo"``.
+
 
 Exercise 1
-++++++++++
+----------
 
 Change the template ``dojo.pt`` to display the title of the current object:
 
@@ -65,7 +75,7 @@ Change the template ``dojo.pt`` to display the title of the current object:
 
 
 Exercise 2
-++++++++++
+----------
 
 Create a talk "Dexterity for the win!" and add information to all fiels, especially the speaker and the email-adress.
 
@@ -91,7 +101,7 @@ For that talk, modify the template ``dojo.pt``:
 
 
 Exercise 3
-++++++++++
+----------
 
 Wrap the code in ``dojo.pt`` in the following code:
 
@@ -106,9 +116,3 @@ Wrap the code in ``dojo.pt`` in the following code:
     </html>
 
 Replace the ``content` in ``fill-slot="content"`` with ``main`` and ``content-core`` and see what happens.
-
-
-.. note::
-
-    Learn all about page templates at http://plone-training.readthedocs.org/en/latest/zpt.html
-
