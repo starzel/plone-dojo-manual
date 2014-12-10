@@ -34,4 +34,6 @@ The code is in ``<buidout-directory>/src/plone.dojo/src/plone/dojo/``. All paths
 
 .. note::
 
-    Read more about add-ons: http://plone-training.readthedocs.org/en/latest/addons.html
+    More about the features of Plone: http://plone-training.readthedocs.org/en/latest/features.html
+
+    More about add-ons: http://plone-training.readthedocs.org/en/latest/addons.html

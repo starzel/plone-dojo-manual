@@ -2,9 +2,6 @@ Templates
 =========
 
 
-Browser Views
--------------
-
 Browser views are the swiss army knife of Plone Programmer.
 
 Open ``http://localhost:8080/Plone/dojo``.
@@ -54,13 +51,10 @@ And to a template ``dojo.pt`` that is ``browser/dojo.pt``.
     </h1>
 
 
-Templates
-----------
-
 Exercise 1
 ++++++++++
 
-Change the template to display the title of the current object:
+Change the template ``dojo.pt`` to display the title of the current object:
 
 ..  admonition:: Solution
     :class: toggle
@@ -112,4 +106,9 @@ Wrap the code in ``dojo.pt`` in the following code:
     </html>
 
 Replace the ``content` in ``fill-slot="content"`` with ``main`` and ``content-core`` and see what happens.
+
+
+.. note::
+
+    Learn all about page templates at http://plone-training.readthedocs.org/en/latest/zpt.html
 
