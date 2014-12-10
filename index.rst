@@ -3,7 +3,7 @@ Plone Coding Dojo
 
 *by Philip Bauer*
 
-Python Usergroup Munich, 9.12.2015
+Held at the Python Usergroup Munich, 9.12.2015
 
 
 Contents:
