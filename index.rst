@@ -17,5 +17,5 @@ Contents:
     starting
     demo
     content
+    templates
     views
-    code
